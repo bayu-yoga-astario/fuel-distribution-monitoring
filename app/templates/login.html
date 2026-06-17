@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Pertamina Fuel Distribution Monitoring</title>
+    <meta name="description" content="Pertamina - Secure Admin Login Portal for Fuel Distribution Monitoring System">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg-dark: #f3f4f6;
+            --bg-panel: #ffffff;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --accent-blue: #00529C;
+            --accent-blue-dim: rgba(0, 82, 156, 0.15);
+            --accent-purple: #EC1C24;
+            --accent-purple-dim: rgba(236, 28, 36, 0.15);
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --danger: #EC1C24;
+            --success: #8CC63F;
+            --glass-blur: none;
+            --shadow-glow: 0 4px 14px rgba(0, 82, 156, 0.2);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(236, 28, 36, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(0, 82, 156, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(140, 198, 63, 0.05) 0%, transparent 50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            color: var(--text-primary);
+        }
+
+        /* Animated Background Particles */
+        .particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Login Container */
+        .login-wrapper {
+            position: relative; z-index: 1;
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; max-width: 480px; padding: 1.5rem;
+        }
+
+        .login-card {
+            width: 100%;
+            background: var(--bg-panel);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 0 20px rgba(0, 82, 156, 0.05);
+            animation: cardSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        @keyframes cardSlideIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glow Border Effect */
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px; right: -1px; bottom: -1px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, var(--accent-blue-dim), transparent, transparent);
+            z-index: -1;
+            opacity: 0.8;
+            animation: borderGlow 4s ease-in-out infinite alternate;
+        }
+        @keyframes borderGlow {
+            0% { opacity: 0.2; }
+            100% { opacity: 0.5; }
+        }
+
+        /* Brand Header */
+        .login-brand {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .login-brand-icon {
+            width: 72px; height: 72px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 20px;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 2rem; color: #fff;
+            box-shadow: var(--shadow-glow), 0 8px 30px rgba(0, 229, 255, 0.15);
+            margin-bottom: 1.2rem;
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+        @keyframes iconPulse {
+            0%, 100% { box-shadow: var(--shadow-glow), 0 8px 30px rgba(0, 229, 255, 0.15); }
+            50% { box-shadow: 0 0 40px rgba(0, 229, 255, 0.35), 0 8px 40px rgba(0, 229, 255, 0.2); }
+        }
+        .login-brand h1 {
+            font-size: 1.8rem; font-weight: 700; letter-spacing: 0.5px;
+        }
+        .login-brand h1 .ent-badge {
+            font-size: 0.55rem;
+            background: var(--accent-purple);
+            padding: 3px 8px;
+            border-radius: 4px;
+            vertical-align: top;
+            margin-left: 6px;
+            letter-spacing: 1px;
+        }
+        .login-brand p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .input-wrapper {
+            position: relative;
+        }
+        .input-wrapper i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .form-control {
+            width: 100%;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+        .form-control:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px var(--accent-blue-dim), 0 0 20px rgba(0, 229, 255, 0.08);
+            background: #ffffff;
+        }
+        .form-control:focus + i,
+        .input-wrapper:focus-within i {
+            color: var(--accent-blue);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            padding: 4px;
+        }
+        .toggle-password:hover { color: var(--accent-blue); }
+
+        /* Error Message */
+        .login-error {
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid rgba(255, 51, 102, 0.25);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--danger);
+            animation: shakeError 0.4s ease;
+        }
+        .login-error.show { display: flex; }
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            75% { transform: translateX(-4px); }
+        }
+
+        /* Login Button */
+        .login-btn {
+            width: 100%;
+            padding: 0.95rem;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-blue), #00b8d4);
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        .login-btn:hover {
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.3), 0 4px 20px rgba(0, 229, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        .login-btn.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        .login-btn .spinner {
+            display: none;
+            width: 20px; height: 20px;
+            border: 2.5px solid rgba(0,0,0,0.2);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        .login-btn.loading .spinner { display: block; }
+        .login-btn.loading .btn-text { display: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Footer */
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .login-footer p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .login-footer .secure-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--success);
+            font-size: 0.78rem;
+            font-weight: 500;
+            margin-top: 0.6rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-card { padding: 2rem 1.5rem; border-radius: 18px; }
+            .login-brand-icon { width: 60px; height: 60px; font-size: 1.6rem; }
+            .login-brand h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animated Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Login Card -->
+    <div class="login-wrapper">
+        <div class="login-card">
+            <!-- Brand -->
+            <div class="login-brand">
+                <div class="login-brand-icon" style="background: transparent; width: 100%; height: auto; margin-bottom: 1rem; display: flex; justify-content: center;">
+                    <img src="/static/img/pertamina-logo.png" alt="Pertamina" style="width: 260px; max-width: 100%; height: auto; object-fit: contain;">
+                </div>
+                <h1 style="margin-top:0;">Fuel Distribution <span class="ent-badge">Monitoring</span></h1>
+                <p>Secure Enterprise Admin Portal</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" onsubmit="performLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="login-username" class="form-control" placeholder="Enter your username" autocomplete="username" required>
+                        <i class="fa-regular fa-user"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="login-password" class="form-control" placeholder="Enter your password" autocomplete="current-password" required>
+                        <i class="fa-solid fa-lock"></i>
+                        <button type="button" class="toggle-password" onclick="togglePassword()">
+                            <i class="fa-regular fa-eye" id="eye-icon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="login-error" id="login-error">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span id="error-text">Username atau password salah</span>
+                </div>
+
+                <button type="submit" class="login-btn" id="login-btn">
+                    <span class="btn-text"><i class="fa-solid fa-right-to-bracket"></i> Sign In</span>
+                    <div class="spinner"></div>
+                </button>
+            </form>
+
+            <!-- Footer -->
+            <div class="login-footer">
+                <p>&copy; 2026 Pertamina - Fuel Distribution Monitoring v2.0</p>
+                <div class="secure-badge">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    256-bit SSL Encrypted Connection
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Redirect if already logged in
+        if (localStorage.getItem('fueltrack_jwt')) {
+            window.location.href = '/dashboard';
+        }
+
+        // Generate particles
+        (function() {
+            const container = document.getElementById('particles');
+            const colors = ['rgba(0, 229, 255, 0.3)', 'rgba(157, 0, 255, 0.25)', 'rgba(255, 51, 102, 0.2)'];
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = Math.random() * 4 + 2;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                p.style.animationDelay = (Math.random() * 10) + 's';
+                container.appendChild(p);
+            }
+        })();
+
+        // Toggle password visibility
+        function togglePassword() {
+            const input = document.getElementById('login-password');
+            const icon = document.getElementById('eye-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        // Login
+        function performLogin(e) {
+            e.preventDefault();
+            const btn = document.getElementById('login-btn');
+            const errorEl = document.getElementById('login-error');
+            const errorText = document.getElementById('error-text');
+            
+            errorEl.classList.remove('show');
+            btn.classList.add('loading');
+
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+
+            if (!username || !password) {
+                errorText.textContent = 'Username dan password harus diisi';
+                errorEl.classList.add('show');
+                btn.classList.remove('loading');
+                return;
+            }
+
+            fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            .then(async res => {
+                if (res.ok) {
+                    const data = await res.json();
+                    localStorage.setItem('fueltrack_jwt', data.access_token);
+                    localStorage.setItem('fueltrack_role', data.role || 'admin');
+                    localStorage.setItem('fueltrack_user', username);
+                    btn.innerHTML = '<i class="fa-solid fa-check" style="font-size:1.2rem;"></i>';
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 500);
+                } else {
+                    const errData = await res.json().catch(() => ({}));
+                    errorText.textContent = errData.detail || 'Username atau password salah';
+                    errorEl.classList.add('show');
+                    btn.classList.remove('loading');
+                }
+            })
+            .catch(() => {
+                errorText.textContent = 'Gagal terhubung ke server';
+                errorEl.classList.add('show');
+                btn.classList.remove('loading');
+            });
+        }
+
+        // Enter key support
+        document.getElementById('login-password').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('login-form').requestSubmit();
+        });
+    </script>
+</body>
+</html>
